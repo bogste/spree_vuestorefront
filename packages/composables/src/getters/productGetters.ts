@@ -10,6 +10,7 @@ import _ from 'lodash';
 
 type ProductVariantFilters = any
 
+const fallbackImage = '/icons/no-image.png';
 // TODO: Add interfaces for some of the methods in core
 // Product
 
@@ -61,12 +62,12 @@ export const getProductGallery = (product: ProductVariant): AgnosticMediaGallery
 export const getProductCoverImage = (product: ProductVariant): string => {
   const mainProductImage = product.images[0];
   if (!mainProductImage) {
-    return undefined;
+    return fallbackImage;
   }
 
   const styles = mainProductImage.styles;
   if (styles.length === 0) {
-    return undefined;
+    return fallbackImage;
   }
 
   const largestStyle = styles.reduce((prev, curr) => curr.height > prev.height ? curr : prev);
