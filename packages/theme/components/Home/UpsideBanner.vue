@@ -1,10 +1,12 @@
 <template>
-  <SfBanner
-    class="upside-banner"
-    description="This demo was developed by the team at Upside. Interested in integrating your Spree shop with VSF?"
-    buttonText="Contact Us"
-    link="https://upsidelab.io/contact/"
-  />
+  <client-only>
+    <SfBanner
+      class="upside-banner"
+      description="This demo was developed by the team at Upside. Interested in integrating your Spree shop with VSF?"
+      buttonText="Contact Us"
+      link="https://upsidelab.io/contact/"
+    />
+  </client-only>
 </template>
 
 <script>
@@ -40,6 +42,19 @@ export default {
     --banner-description-font-size: 14px;
     --banner-description-margin: 0;
     --banner-padding: 1rem;
+    --banner-wrapper-width: 100%;
+  }
+}
+
+.upside-banner .sf-banner__wrapper {
+  @include for-mobile {
+    box-sizing: border-box;
+  }
+}
+
+.upside-banner .sf-banner__description {
+  @include for-mobile {
+    width: 50%;
   }
 }
 
