@@ -1,6 +1,9 @@
 <template>
   <div id="home">
     <LazyHydrate when-idle>
+      <UpsideBanner />
+    </LazyHydrate>
+    <LazyHydrate when-idle>
       <SfHero class="hero">
         <SfHeroItem
           v-for="(hero, i) in heroes"
@@ -108,6 +111,7 @@ import {
 } from '@storefront-ui/vue';
 import InstagramFeed from '~/components/InstagramFeed.vue';
 import MobileStoreBanner from '~/components/MobileStoreBanner.vue';
+import UpsideBanner from '~/components/Home/UpsideBanner.vue';
 import LazyHydrate from 'vue-lazy-hydration';
 
 export default {
@@ -126,6 +130,7 @@ export default {
     SfArrow,
     SfButton,
     MobileStoreBanner,
+    UpsideBanner,
     LazyHydrate
   },
   setup() {
