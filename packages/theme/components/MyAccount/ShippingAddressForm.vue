@@ -263,6 +263,7 @@ export default {
 
     onSSR(async () => {
       await loadCountries();
+
       if (form.country) {
         await loadStates(form.country);
       }
@@ -270,6 +271,7 @@ export default {
 
     onMounted(async () => {
       await loadCountries();
+
       if (form.country) {
         await loadStates(form.country);
       }
@@ -278,10 +280,7 @@ export default {
     watch(() => form.country, async (newValue, oldValue) => {
       if (newValue !== oldValue) {
         form.state = null;
-
-        if (form.country) {
-          await loadStates(newValue);
-        }
+        await loadStates(newValue);
       }
     });
 
