@@ -2,13 +2,13 @@ import { sharedRef, useVSFContext } from '@vue-storefront/core';
 import { computed } from '@vue/composition-api';
 import { UseCountry } from '../types';
 
-export default function useCountry(): UseCountry {
+export default function useCountry(id: string): UseCountry {
   const context = useVSFContext();
 
-  const countries = sharedRef(null, 'useCountry-countries');
-  const states = sharedRef(null, 'useCountry-states');
-  const loading = sharedRef(false, 'useCountry-loading');
-  const error = sharedRef({ load: null, loadStates: null }, 'useCountry-error');
+  const countries = sharedRef([], 'useCountry-countries');
+  const states = sharedRef([], `useCountry-states-${id}`);
+  const loading = sharedRef(false, `useCountry-loading-${id}`);
+  const error = sharedRef({ load: null, loadStates: null }, `useCountry-error-${id}`);
 
   const load = async () => {
     if (countries.value) {
