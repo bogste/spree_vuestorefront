@@ -1,4 +1,4 @@
-import type { CategorySearchResult, LineItem, ProductVariant, Order } from '@upsidelab/vue-storefront-spree-api';
+import type { CategorySearchResult, LineItem, ProductVariant, Order, Country, State } from '@upsidelab/vue-storefront-spree-api';
 import type { AgnosticGroupedFacet, ComputedProperty } from '@vue-storefront/core';
 
 export { UseCategory, UseProduct } from '@vue-storefront/core';
@@ -9,8 +9,8 @@ export type UseCountryErrors = {
 };
 
 export type UseCountry = {
-  countries: ComputedProperty<any>;
-  states: ComputedProperty<any>;
+  countries: ComputedProperty<Country[]>;
+  states: ComputedProperty<State[]>;
   loading: ComputedProperty<boolean>
   error: ComputedProperty<UseCountryErrors>
   load(): Promise<void>;
