@@ -14,7 +14,7 @@ export default function useCountry(): UseCountry {
     if (countries.value) {
       loading.value = false;
       error.value.load = null;
-      countries.value = { ...countries.value };
+      countries.value = [...countries.value];
       return;
     }
 
