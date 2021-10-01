@@ -9,6 +9,7 @@
       v-if="isAuthenticated && billing"
       v-model="selectedAddressId"
       :addresses="billing.addresses"
+      :saved-address="checkoutBillingAddress"
     />
     <form @submit.prevent="handleSubmit(handleFormSubmit)">
       <div v-if="!selectedAddressId" class="form">
@@ -190,12 +191,13 @@ import {
   SfRadio,
   SfCheckbox
 } from '@storefront-ui/vue';
-import { ref } from '@vue/composition-api';
+import { ref, onMounted } from '@vue/composition-api';
 import { onSSR } from '@vue-storefront/core';
 import { useBilling, useCountry, useUser, useUserBilling } from '@upsidelab/vue-storefront-spree';
 import { required, min, digits } from 'vee-validate/dist/rules';
 import { ValidationProvider, ValidationObserver, extend } from 'vee-validate';
 import AddressPicker from '~/components/Checkout/AddressPicker';
+import _ from 'lodash';
 
 extend('required', {
   ...required,
@@ -224,7 +226,7 @@ export default {
     ValidationObserver
   },
   setup(props, context) {
-    const { load, save } = useBilling();
+    const { billing: checkoutBillingAddress, load, save } = useBilling();
     const { countries, load: loadCountries } = useCountry();
     const { isAuthenticated } = useUser();
     const { billing, load: loadUserBilling } = useUserBilling();
@@ -256,6 +258,20 @@ export default {
       await load();
       await loadUserBilling();
       await loadCountries();
+
+      if (checkoutBillingAddress.value) {
+        form.value = _.omit(checkoutBillingAddress.value, ['_id']);
+      }
+    });
+
+    onMounted(async () => {
+      await load();
+      await loadUserBilling();
+      await loadCountries();
+
+      if (checkoutBillingAddress.value) {
+        form.value = _.omit(checkoutBillingAddress.value, ['_id']);
+      }
     });
 
     return {
@@ -264,6 +280,7 @@ export default {
       countries,
       billing,
       selectedAddressId,
+      checkoutBillingAddress,
       handleFormSubmit
     };
   }

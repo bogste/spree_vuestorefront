@@ -9,6 +9,7 @@
       v-if="isAuthenticated && shipping"
       v-model="selectedAddressId"
       :addresses="shipping.addresses"
+      :saved-address="checkoutShippingAddress"
     />
     <form @submit.prevent="handleSubmit(handleFormSubmit)">
       <div v-if="!selectedAddressId" class="form">
@@ -203,12 +204,13 @@ import {
   SfButton,
   SfSelect
 } from '@storefront-ui/vue';
-import { ref } from '@vue/composition-api';
+import { ref, onMounted } from '@vue/composition-api';
 import { onSSR, useVSFContext } from '@vue-storefront/core';
 import { useShipping, useCountry, useUser, useUserShipping } from '@upsidelab/vue-storefront-spree';
 import { required, min, digits } from 'vee-validate/dist/rules';
 import { ValidationProvider, ValidationObserver, extend } from 'vee-validate';
 import AddressPicker from '~/components/Checkout/AddressPicker';
+import _ from 'lodash';
 
 extend('required', {
   ...required,
@@ -237,7 +239,7 @@ export default {
   },
   setup () {
     const isFormSubmitted = ref(false);
-    const { load, save, loading } = useShipping();
+    const { shipping: checkoutShippingAddress, load, save, loading } = useShipping();
     const { shipping, load: loadUserShipping } = useUserShipping();
     const { countries, load: loadCountries } = useCountry();
     const { isAuthenticated } = useUser();
@@ -274,6 +276,20 @@ export default {
       await load();
       await loadUserShipping();
       await loadCountries();
+
+      if (checkoutShippingAddress.value) {
+        form.value = _.omit(checkoutShippingAddress.value, ['_id']);
+      }
+    });
+
+    onMounted(async () => {
+      await load();
+      await loadUserShipping();
+      await loadCountries();
+
+      if (checkoutShippingAddress.value) {
+        form.value = _.omit(checkoutShippingAddress.value, ['_id']);
+      }
     });
 
     return {
@@ -284,6 +300,7 @@ export default {
       countries,
       shipping,
       selectedAddressId,
+      checkoutShippingAddress,
       handleFormSubmit
     };
   }
